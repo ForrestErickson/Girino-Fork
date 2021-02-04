@@ -80,8 +80,12 @@ void error (void);
 // Fills the given buffer with bufferSize chars from a Serial object
 void fillBuffer( \
 	char *buffer, \
-	byte bufferSize, \
-	HardwareSerial::HardwareSerial* serial = &Serial );
+//FLE	byte bufferSize, \
+//FLE	HardwareSerial::HardwareSerial* serial = &Serial );
+  byte bufferSize);     //FLE
+
+
+
 void printStatus(void);
 
 //-----------------------------------------------------------------------------
@@ -99,4 +103,3 @@ extern           uint8_t triggerEvent;
 extern           uint8_t threshold;
 
 extern              char commandBuffer[COMBUFFERSIZE+1];
-

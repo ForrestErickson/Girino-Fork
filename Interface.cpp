@@ -40,26 +40,32 @@ void error (void) {
 //-----------------------------------------------------------------------------
 // Fills the given buffer with bufferSize chars from a Serial object
 
-void fillBuffer( char *buffer, byte bufferSize, HardwareSerial::HardwareSerial* serial )
+//FLE void fillBuffer( char *buffer, byte bufferSize, HardwareSerial::HardwareSerial* serial )
+void fillBuffer( char *buffer, byte bufferSize )
 {
 	// Clean buffer
 	memset( (void *)buffer, '\0', sizeof(char) * bufferSize );
 
-	dprint(serial->available());
+//FLE  dprint(serial->available());
+  dprint(Serial.available());
 	
-	byte limit = ( bufferSize < serial->available() ) ? bufferSize : serial->available();
+//FLE  byte limit = ( bufferSize < serial->available() ) ? bufferSize : serial->available();
+	byte limit = ( bufferSize < Serial.available() ) ? bufferSize : Serial.available();
 
-	dprint(serial->available());
+//FLE  dprint(serial->available());
+  dprint(Serial.available());
 	dprint(bufferSize);
 	dprint(limit);
 
 	// Fill buffer
 	for ( byte i = 0; i < limit; i++ ) {
-		dprint(serial->available());
+//FLE  dprint(serial->available());
+  dprint(Serial.available());
 		dprint(i);
 		dprint(buffer);
 
-		buffer[i] = serial->read();
+//FLE    buffer[i] = serial->read();
+    buffer[i] = Serial.read();
 	}
 }
 
