@@ -134,8 +134,8 @@ void loop (void) {
 		char theChar = Serial.read();
 			// Parse character
 		switch (theChar) {
-			case 's':			// 's' for starting ADC conversions
-				//Serial.println("ADC conversions started");
+			case 's':			// 's' for starting ADC conversions        
+				Serial.println("ADC conversions started");
 
 				// Clear buffer
 				memset( (void *)ADCBuffer, 0, sizeof(ADCBuffer) );
@@ -145,16 +145,17 @@ void loop (void) {
 				//delay(1);
 				startAnalogComparator();
 				break;
+        
 			case 'S':			// 'S' for stopping ADC conversions
-				//Serial.println("ADC conversions stopped");
+				Serial.println("ADC conversions stopped");
 				stopAnalogComparator();
 				stopADC();
 				break;
+        
 			case 'p':			// 'p' for new prescaler setting
 			case 'P': {
 				// Wait for COMMANDDELAY ms to be sure that the Serial buffer is filled
 				delay(COMMANDDELAY);
-
 				fillBuffer( commandBuffer, COMBUFFERSIZE );
 
 				// Convert buffer to integer
@@ -245,13 +246,15 @@ void loop (void) {
 
 			case 'd':			// 'd' for display status
 			case 'D':
+        delay(COMMANDDELAY);
+        fillBuffer( commandBuffer, COMBUFFERSIZE );
 				printStatus();
 				break;
 
 			default:
 				// Display error message
 				Serial.print("ERROR: Command not found, it was: ");
-				Serial.println(theChar);
+				Serial.println(theChar,HEX);
 				error();
 		}
 	}

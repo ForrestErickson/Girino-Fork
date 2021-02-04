@@ -57,6 +57,7 @@ if ( 1 ):
 		stream.write(bytes('s', 'utf-8'))
 		eventString = stream.read(1280)
 		eventData.append(np.array(unpack( '1280B', eventString )))
+		print( "eventData: " )
 		print( eventData )
 		stream.write(bytes('S', 'utf-8'))
 		stream.flushInput()

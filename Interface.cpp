@@ -71,8 +71,9 @@ void fillBuffer( char *buffer, byte bufferSize )
 
 void printStatus( void )
 {
-	Serial.print("Buffer size: ");
-	Serial.println(ADCBUFFERSIZE);
+	Serial.println("\n***** Status *********");
+  Serial.print("Buffer size: ");
+  Serial.println(ADCBUFFERSIZE);
 	Serial.print("Baud rate: ");
 	Serial.println(BAUDRATE);
 	Serial.print("Wait duration: ");
