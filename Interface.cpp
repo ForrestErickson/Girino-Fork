@@ -46,16 +46,21 @@ void fillBuffer( char *buffer, byte bufferSize )
 	// Clean buffer
 	memset( (void *)buffer, '\0', sizeof(char) * bufferSize );
 
+
 //FLE  dprint(serial->available());
+#if 0
   dprint(Serial.available());
+#endif
 	
 //FLE  byte limit = ( bufferSize < serial->available() ) ? bufferSize : serial->available();
 	byte limit = ( bufferSize < Serial.available() ) ? bufferSize : Serial.available();
 
 //FLE  dprint(serial->available());
+#if 0
   dprint(Serial.available());
-	dprint(bufferSize);
-	dprint(limit);
+  dprint(bufferSize);
+  dprint(limit);
+#endif
 
 	// Fill buffer
 	for ( byte i = 0; i < limit; i++ ) {

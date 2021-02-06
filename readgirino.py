@@ -22,17 +22,19 @@ HIGH = 1
 threshold = 256/2
 
 #if ( (line.find( "Girino ready" )) != -1 ):
-if ( 1 ):
 #if ( str.find(line, "Girino ready" ) != -1 ):
+if ( 1 ):
 
 	print("Girino tells me that it is ready")
 
+#Let's get and print status
 #	stream.write('d')
 	stream.write(bytes('d', 'utf-8'))
-
 	for i in range(6):
-		print(stream.readline(), "utf-8")
+#		print(stream.readline(), "utf-8")
+		print(stream.readline())
 
+#Let's set some parameters
 	stream.write(bytes('p128', 'utf-8'))
 	print(stream.readline())
 
@@ -40,25 +42,26 @@ if ( 1 ):
 	print(stream.readline())
 
 #Let's print error message.
-	stream.write(bytes('x', 'utf-8'))
-	print(stream.readline())
+#	stream.write(bytes('x', 'utf-8'))
+#	print(stream.readline())
 
-#Let's get and print status
+#Let's get and print  the updated status
 	stream.write(bytes('d', 'utf-8'))
-
 	for i in range(6):
-		print(stream.readline(), "utf-8")
+		print(stream.readline())
 
 	print("Start A2D and get eventData")
 
 	eventData = []
 
 	for i in range(5):
-		stream.write(bytes('s', 'utf-8'))
+        #Set threshold to a low value.
+#		stream.write(bytes('s', 'utf-8'))
+		stream.write(bytes('c', 'utf-8'))
 		eventString = stream.read(1280)
 		eventData.append(np.array(unpack( '1280B', eventString )))
-		print( "eventData: " )
-		print( eventData )
+		print( "eventData: ")
+		print( eventData)
 		stream.write(bytes('S', 'utf-8'))
 		stream.flushInput()
 

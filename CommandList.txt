@@ -1,0 +1,21 @@
+
+c or C to capture (start, stop and report).
+
+
+d or D for display status
+
+s to start conversion
+S to Stop conversion
+
+f or F set Freeze to stop capture and report.
+
+p or P for Prescaler setting
+
+r or R for voltage Reference setting
+
+e or E for trigger Event setting
+
+w or W for new Wait setting
+
+t or T for new Threshold setting
+

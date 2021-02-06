@@ -155,7 +155,7 @@ void setVoltageReference( uint8_t reference )
 void setTriggerEvent( uint8_t TriggerEvent )
 {
 	dshow("# setTriggerEvent()");
-	dprint(event);
+	dprint(TriggerEvent);
 	// These bits determine which comparator events that trigger the Analog
 	// Comparator interrupt.
 	//	ACIS1	ACIS0	Mode

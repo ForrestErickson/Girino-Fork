@@ -1,6 +1,10 @@
 /*  Modified by Forrest Lee Erickson
  *  Date: 20210203
  *  Removing old style HardwareSerial.h code.
+ *  Add command F to force freeze to stop capture and report.
+ *  Add command C to sequence Start, Stop and report.
+ *  20210206 Shortened some strings so that DEBUG can be set with out running out of dunamic memory
+ *  
  */
 
 
@@ -88,11 +92,13 @@ void setup (void) {		// Setup of the microcontroller
 }
 
 void loop (void) {
-	dprint(ADCCounter);
-	dprint(stopIndex);
-	dprint(wait);
-	dprint(freeze);
-	#if DEBUG == 1
+//	dprint(ADCCounter);
+//	dprint(stopIndex);
+//	dprint(wait);
+//	dprint(freeze);
+
+//  #if DEBUG == 1
+  #if 0
 	Serial.println( ADCSRA, BIN );
 	Serial.println( ADCSRB, BIN );
 	#endif
@@ -100,14 +106,28 @@ void loop (void) {
 	// If freeze flag is set, then it is time to send the buffer to the serial port
 	if ( freeze )
 	{
+//    Serial.println("Write buffer.");
+    Serial.println("\n\n *****************");
 		dshow("# Frozen");
-
 		// Send buffer through serial port in the right order
-		//Serial.print("Buffer: ");
-		//Serial.write( ADCBuffer, ADCBUFFERSIZE );
-		//Serial.print("End of Buffer");
-		Serial.write( (uint8_t *)ADCBuffer + ADCCounter, ADCBUFFERSIZE - ADCCounter );
-		Serial.write( (uint8_t *)ADCBuffer, ADCCounter );
+//		Serial.print("Buffer: ");
+// Binary write   
+//    Serial.write( ADCBuffer, ADCBUFFERSIZE );
+
+//int ii=0;
+//    for (ii =((uint8_t *)ADCBuffer + ADCCounter); ii < (ADCBUFFERSIZE - ADCCounter); ii++) {
+//    for (ii =0; ii < ADCBUFFERSIZE; ii++) {
+
+//Human Fiendly format
+    for (int ii = 0; ii <= ADCBUFFERSIZE; ii++) {
+          Serial.print( ADCBuffer[ii]); 
+          Serial.print(", ");     
+    }
+    Serial.println("");
+		Serial.println("End of Buffer");
+
+		//Serial.write( (uint8_t *)ADCBuffer + ADCCounter, ADCBUFFERSIZE - ADCCounter );
+		//Serial.write( (uint8_t *)ADCBuffer, ADCCounter );
 
 		// Turn off errorPin
 		//digitalWrite( errorPin, LOW );
@@ -134,8 +154,41 @@ void loop (void) {
 		char theChar = Serial.read();
 			// Parse character
 		switch (theChar) {
+
+      case 'c':     // 'c' Capture (to start, stop, freeze to read data)
+      case 'C': {
+        // Wait for COMMANDDELAY ms to be sure that the Serial buffer is filled
+        delay(COMMANDDELAY);
+        fillBuffer( commandBuffer, COMBUFFERSIZE );
+        // Start
+        Serial.println("Started");
+        startADC();
+        // Let the ADC fill the buffer a little bit
+        delay(100);
+        startAnalogComparator();
+        //Stop
+        Serial.println("Stopped");
+        stopAnalogComparator();
+        stopADC();        
+         // Set freeze
+        freeze = true;
+        Serial.println("Freeze");
+        }
+        break;
+        
+      case 'f':     // 'f' to set freeze and force read data
+      case 'F': {
+        // Wait for COMMANDDELAY ms to be sure that the Serial buffer is filled
+        delay(COMMANDDELAY);
+        fillBuffer( commandBuffer, COMBUFFERSIZE );
+        // Set freeze
+        freeze = true;
+        Serial.println("Freeze");
+        }
+        break;
+        
 			case 's':			// 's' for starting ADC conversions        
-				Serial.println("ADC conversions started");
+				Serial.println("Started");
 
 				// Clear buffer
 				memset( (void *)ADCBuffer, 0, sizeof(ADCBuffer) );
@@ -147,7 +200,7 @@ void loop (void) {
 				break;
         
 			case 'S':			// 'S' for stopping ADC conversions
-				Serial.println("ADC conversions stopped");
+				Serial.println("Stopped");
 				stopAnalogComparator();
 				stopADC();
 				break;
@@ -162,7 +215,7 @@ void loop (void) {
 				uint8_t newP = atoi( commandBuffer );
 
 				// Display moving status indicator
-				Serial.print("Setting prescaler to: ");
+				Serial.print("Prescaler: ");
 				Serial.println(newP);
 
 				prescaler = newP;
@@ -181,7 +234,7 @@ void loop (void) {
 				uint8_t newR = atoi( commandBuffer );
 
 				// Display moving status indicator
-				Serial.print("Setting voltage reference to: ");
+				Serial.print("Vref: ");
 				Serial.println(newR);
 
 				setVoltageReference(newR);
@@ -199,7 +252,7 @@ void loop (void) {
 				uint8_t newE = atoi( commandBuffer );
 
 				// Display moving status indicator
-				Serial.print("Setting trigger event to: ");
+				Serial.print("Trig: ");
 				Serial.println(newE);
 
 				triggerEvent = newE;
@@ -218,7 +271,7 @@ void loop (void) {
 				uint8_t newW = atoi( commandBuffer );
 
 				// Display moving status indicator
-				Serial.print("Setting waitDuration to: ");
+				Serial.print("Wait: ");
 				Serial.println(newW);
 
 				waitDuration = newW;
@@ -236,7 +289,7 @@ void loop (void) {
 				uint8_t newT = atoi( commandBuffer );
 
 				// Display moving status indicator
-				Serial.print("Setting threshold to: ");
+				Serial.print("Threshold: ");
 				Serial.println(newT);
 
 				threshold = newT;

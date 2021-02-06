@@ -216,6 +216,7 @@ void initADC(void)
 	cbi(ADCSRB,ADTS2);
 	cbi(ADCSRB,ADTS1);
 	cbi(ADCSRB,ADTS0);
+//  sbi(ADCSRB,ADTS0);    //Use analog comparator
 
 	//---------------------------------------------------------------------
 	// DIDR0 settings
@@ -272,7 +273,9 @@ void initAnalogComparator(void)
 	// make the comparator trigger the Timer/Counter1 Input Capture
 	// interrupt, the ICIE1 bit in the Timer Interrupt Mask Register
 	// (TIMSK1) must be set.
-	cbi(ACSR,ACIC);
+	//cbi(ACSR,ACIC);   //FLE
+  sbi(ACSR,ACIC);     //FLE
+ 
 	// These bits determine which comparator events that trigger the Analog
 	// Comparator interrupt.
 	//	ACIS1	ACIS0	Mode
