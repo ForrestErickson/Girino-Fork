@@ -76,9 +76,13 @@ void setup (void) {		// Setup of the microcontroller
 	freeze = false;
 
 	prescaler = 128;
-	triggerEvent = 3;
-
+	triggerEvent = 3;   //Rising edge
 	threshold = 127;
+
+//  setVoltageReference(0); // Set for AREF
+  setVoltageReference(1); // Set for AVCC
+  setTriggerEvent(triggerEvent); //
+  setADCPrescaler(prescaler);
 
 	// Activate interrupts
 	sei();

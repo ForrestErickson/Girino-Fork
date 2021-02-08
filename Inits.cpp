@@ -252,17 +252,22 @@ void initAnalogComparator(void)
 	// Comparator Interrupt must be disabled by clearing the ACIE bit in
 	// ACSR. Otherwise an interrupt can occur when the bit is changed.
 	cbi(ACSR,ACD);
+  
 	// When this bit is set, a fixed bandgap reference voltage replaces the
 	// positive input to the Analog Comparator. When this bit is cleared,
 	// AIN0 is applied to the positive input of the Analog Comparator. When
 	// the bandgap referance is used as input to the Analog Comparator, it
 	// will take a certain time for the voltage to stabilize. If not
 	// stabilized, the first conversion may give a wrong value.
-	cbi(ACSR,ACBG);
+//FLE	cbi(ACSR,ACBG);
+  sbi(ACSR,ACBG);     //Set for the band gap reference ?1.1V?
+ 
 	// When the ACIE bit is written logic one and the I-bit in the Status
 	// Register is set, the Analog Comparator interrupt is activated.
 	// When written logic zero, the interrupt is disabled.
-	cbi(ACSR,ACIE);
+	//cbi(ACSR,ACIE); //FLE
+  sbi(ACSR,ACIE);   //Set for iterrupt on
+ 
 	// When written logic one, this bit enables the input capture function
 	// in Timer/Counter1 to be triggered by the Analog Comparator. The
 	// comparator output is in this case directly connected to the input
