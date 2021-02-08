@@ -278,8 +278,8 @@ void initAnalogComparator(void)
 	// make the comparator trigger the Timer/Counter1 Input Capture
 	// interrupt, the ICIE1 bit in the Timer Interrupt Mask Register
 	// (TIMSK1) must be set.
-	//cbi(ACSR,ACIC);   //FLE
-  sbi(ACSR,ACIC);     //FLE
+	cbi(ACSR,ACIC);   //FLE
+  //sbi(ACSR,ACIC);     //FLE
  
 	// These bits determine which comparator events that trigger the Analog
 	// Comparator interrupt.

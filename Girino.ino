@@ -4,6 +4,8 @@
  *  Add command F to force freeze to stop capture and report.
  *  Add command C to sequence Start, Stop and report.
  *  20210206 Shortened some strings so that DEBUG can be set with out running out of dunamic memory
+ *  20210208 Connect signal in to A0. Connect signal in trigger D7. Set comparitor treshold to band gap. This captures data from O scope reference. 
+ *  
  *  
  */
 
