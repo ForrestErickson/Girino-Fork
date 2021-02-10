@@ -46,6 +46,15 @@ Finaly to Girino I added a new command "c" which freezes the data and send it to
 I documented all of the commands in the file, CommandList.txt
 [Link to CommandList](CommandList.txt)
 
+## Status: As of 20210210 
+Trigger goes in on D7. I have set the comparitor positive refernce to the 1.1V band gap reference.
+I have tested with the 1Khz 0-2Vp-p calibration waveform from my GDS1054B oscilliscope.
+I instremented two more pins to track program flow into the trigger and into the A2D ISRs.
+With the prescaler set on 128, 64, and 32 I get triggering and measurement of samples. However with prescale of 16, 8,4 or2 no triggering occoures. It looks like the A2D conversion can not happen faster. In fact the A2D conversion time seams to be fixed at 17uS.  
+Waveforms:  
+![traces](CH1offCH2TriggerCH3A2DCH4SqWaveAtPrescale32.png) "Ch1 off, CH2 Trigger, CH3 A2D high during conversion, CH4 Square Wave input.")  
+
+
 
 ## Status: As of 20210206 
 I still have not figured out how to get the Girino to trigger on an imput signal.
