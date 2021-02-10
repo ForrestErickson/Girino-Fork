@@ -50,7 +50,7 @@ I documented all of the commands in the file, CommandList.txt
 Trigger goes in on D7. I have set the comparitor positive refernce to the 1.1V band gap reference.
 I have tested with the 1Khz 0-2Vp-p calibration waveform from my GDS1054B oscilliscope.
 I instremented two more pins to track program flow into the trigger and into the A2D ISRs.
-With the prescaler set on 128, 64, and 32 I get triggering and measurement of samples. However with prescale of 16, 8,4 or2 no triggering occoures. It looks like the A2D conversion can not happen faster. In fact the A2D conversion time seams to be fixed at 17uS.  
+With the prescaler set on 128, 64, and 32 I get triggering and measurement of samples. However with prescale of 16, 8,4 or2 no triggering occoures. It looks like the A2D conversion can not happen faster. The ISR service for the A2D conversion time seams to be fixed at 17uS. The conversion at Prescale of 32 is 8.6uS for a sampel time of 15.6uS or about 64KSampes/Sec.
 Waveforms:  
 ![traces](CH1offCH2TriggerCH3A2DCH4SqWaveAtPrescale32.png) "Ch1 off, CH2 Trigger, CH3 A2D high during conversion, CH4 Square Wave input.")  
 
