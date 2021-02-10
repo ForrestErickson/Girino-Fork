@@ -5,7 +5,8 @@
  *  Add command C to sequence Start, Stop and report.
  *  20210206 Shortened some strings so that DEBUG can be set with out running out of dunamic memory
  *  20210208 Connect signal in to A0. Connect signal in trigger D7. Set comparitor treshold to band gap. This captures data from O scope reference. 
- *  
+ *  20210209 Tested with 1KHz 2Vp-p scope sqaure wave into A0. Same signal is trigger on D7. Set Comparator reference to 1.1 Band Gap ref.
+ *  Is acble to trigger and capture data when prescaler is set to 
  *  
  */
 
@@ -66,6 +67,17 @@ volatile  boolean freeze;
 void setup (void) {		// Setup of the microcontroller
 	// Open serial port with a baud rate of BAUDRATE b/s
 	Serial.begin(BAUDRATE);
+  pinMode(samplePin, OUTPUT);      // set the second LED pin out
+  pinMode(samplePinGND, OUTPUT);      // set the second LED pin GND pin out
+  pinMode(triggerPin, OUTPUT);      // set the third LED pin out
+  pinMode(triggerPinGND, OUTPUT);      // set the third LED pin GND pin out
+  
+  digitalWrite(samplePinGND, LOW);
+  digitalWrite(samplePin, LOW);
+  digitalWrite(triggerPinGND, LOW);
+  digitalWrite(triggerPin, LOW);
+
+  
 
 	dshow("# setup()");
 	// Clear buffers
@@ -77,7 +89,7 @@ void setup (void) {		// Setup of the microcontroller
 	stopIndex = -1;
 	freeze = false;
 
-	prescaler = 128;
+  
 	triggerEvent = 3;   //Rising edge
 	threshold = 127;
 
@@ -90,8 +102,24 @@ void setup (void) {		// Setup of the microcontroller
 	sei();
 
 	initPins();
-	initADC();
-	initAnalogComparator();
+
+//  prescaler = 128;
+  prescaler = 32;
+//  prescaler = 16;
+  initADC();
+  setADCPrescaler(prescaler);
+
+// An alternate way from: https://forum.arduino.cc/index.php?topic=17450.0
+  ACSR =
+ (0<<ACD) |   // Analog Comparator: Enabled
+ (0<<ACBG) |   // Analog Comparator Bandgap Select: AIN0 is applied to the positive input
+ (1<<ACO) |   // Analog Comparator Output: On
+ (1<<ACI) |   // Analog Comparator Interrupt Flag: Clear Pending Interrupt
+ (1<<ACIE) |   // Analog Comparator Interrupt: Enabled
+ (0<<ACIC) |   // Analog Comparator Input Capture: Disabled
+ (1<<ACIS1) | (1<ACIS0);   // Analog Comparator Interrupt Mode: Comparator Interrupt on Rising Output Edge
+ stopAnalogComparator();
+ 
 
 	Serial.println("Girino ready");
 	//printStatus();
@@ -137,7 +165,7 @@ void loop (void) {
 
 		// Turn off errorPin
 		//digitalWrite( errorPin, LOW );
-		cbi(PORTB,PORTB5);
+//FLE		cbi(PORTB, PORTB5);
 
 		wait = false;
 		freeze = false;
@@ -150,9 +178,9 @@ void loop (void) {
 		//delay(1);
 		//startAnalogComparator();
 
-		#if DEBUG == 1
-		delay(3000);
-		#endif
+//		#if DEBUG == 1
+//		delay(3000);
+//		#endif
 	}
 
 	if ( Serial.available() > 0 ) {
@@ -195,13 +223,11 @@ void loop (void) {
         
 			case 's':			// 's' for starting ADC conversions        
 				Serial.println("Started");
-
 				// Clear buffer
 				memset( (void *)ADCBuffer, 0, sizeof(ADCBuffer) );
-
 				startADC();
 				// Let the ADC fill the buffer a little bit
-				//delay(1);
+				delay(1);       
 				startAnalogComparator();
 				break;
         

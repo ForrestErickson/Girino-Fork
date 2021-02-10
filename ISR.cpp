@@ -33,10 +33,9 @@ ISR(ADC_vect)
 	// is read. Consequently, if the result is left adjusted and no more
 	// than 8-bit precision is required, it is sufficient to read ADCH.
 	// Otherwise, ADCL must be read first, then ADCH.
+ digitalWrite(samplePin, HIGH);
 	ADCBuffer[ADCCounter] = ADCH;
-
 	ADCCounter = ( ADCCounter + 1 ) % ADCBUFFERSIZE;
-
 	if ( wait )
 	{
 		if ( stopIndex == ADCCounter )
@@ -46,8 +45,13 @@ ISR(ADC_vect)
 			cbi( ADCSRA, ADEN );
 
 			freeze = true;
+      // Turn off errorPin
+      //digitalWrite( errorPin, LOW );
+      //cbi(PORTB, PORTB5);
+      digitalWrite(triggerPin, LOW);
 		}
 	}
+ digitalWrite(samplePin, LOW);
 }
 
 //-----------------------------------------------------------------------------
@@ -57,11 +61,8 @@ ISR(ANALOG_COMP_vect)
 {
 	// Disable Analog Comparator interrupt
 	cbi( ACSR,ACIE );
-
-	// Turn on errorPin
-	//digitalWrite( errorPin, HIGH );
-	sbi( PORTB, PORTB5 );
+  digitalWrite(triggerPin, HIGH); // Show trigger has occoured.
 
 	wait = true;
-	stopIndex = ( ADCCounter + waitDuration ) % ADCBUFFERSIZE;
+	stopIndex = ( ADCCounter + waitDuration ) % ADCBUFFERSIZE;  //Set the 
 }

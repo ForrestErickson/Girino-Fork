@@ -85,7 +85,7 @@ void printStatus( void )
 	Serial.println(waitDuration);
 	Serial.print("Prescaler: ");
 	Serial.println(prescaler);
-	Serial.print("Trigger event: ");
+	Serial.print("Trigger Type (RFB): ");
 	Serial.println(triggerEvent);
 	Serial.print("Threshold: ");
 	Serial.println(threshold);

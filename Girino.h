@@ -33,7 +33,11 @@
 #define ADCBUFFERSIZE	1280
 
 #define ADCPIN		0
-#define errorPin	13
+#define errorPin	13      //Built in LED.  
+#define samplePin  12     //Another LED.  Indicates ACD sample capture.
+#define samplePinGND  11     //return for Another LED.  
+#define triggerPin  9     //Another LED.  Indicates signal capture triggered.
+#define triggerPinGND  8     //return for Another LED.  
 #define thresholdPin	3
 
 #define BAUDRATE	115200	// Baud rate of UART in bps

@@ -64,14 +64,14 @@ void setADCPrescaler( uint8_t Prescaler )
 	// These bits determine the division factor between the system clock
 	// frequency and the input clock to the ADC.
 	//	ADPS2	ADPS1	ADPS0	Division Factor
-	//	0	0	0	2
-	//	0	0	1	2
-	//	0	1	0	4
-	//	0	1	1	8
-	//	1	0	0	16
-	//	1	0	1	32
-	//	1	1	0	64
-	//	1	1	1	128
+	//	0	0	0	2         No trigger.
+	//	0	0	1	2         No trigger.
+	//	0	1	0	4         No trigger.
+	//	0	1	1	8         No trigger.
+	//	1	0	0	16        No trigger.
+	//	1	0	1	32        26.3uS/Sample
+	//	1	1	0	64        52uS/Sample
+	//	1	1	1	128      104uS/Sample
 	switch (Prescaler)
 	{
 	case 2:
@@ -110,6 +110,7 @@ void setADCPrescaler( uint8_t Prescaler )
 		sbi(ADCSRA,ADPS0);
 		break;
 	default:	// Set 128
+    Serial.println("\n***** Bad Prescale Set to 128 *********");
 		sbi(ADCSRA,ADPS2);
 		sbi(ADCSRA,ADPS1);
 		sbi(ADCSRA,ADPS0);

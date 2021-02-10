@@ -104,6 +104,7 @@ void initPins(void)
 	//	1	0	1	128
 	//	1	1	0	256
 	//	1	1	1	1024
+  // FLE Set for no scaling, ie 1.
 	cbi(TCCR2B,CS22);
 	cbi(TCCR2B,CS21);
 	sbi(TCCR2B,CS20);
@@ -266,7 +267,9 @@ void initAnalogComparator(void)
 	// Register is set, the Analog Comparator interrupt is activated.
 	// When written logic zero, the interrupt is disabled.
 	//cbi(ACSR,ACIE); //FLE
+
   sbi(ACSR,ACIE);   //Set for iterrupt on
+  EIFR &= ~(1 << ADIF); //Clear AC interrupt flag
  
 	// When written logic one, this bit enables the input capture function
 	// in Timer/Counter1 to be triggered by the Analog Comparator. The
