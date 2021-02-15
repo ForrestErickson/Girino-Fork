@@ -7,6 +7,9 @@
  *  20210208 Connect signal in to A0. Connect signal in trigger D7. Set comparitor treshold to band gap. This captures data from O scope reference. 
  *  20210209 Tested with 1KHz 2Vp-p scope sqaure wave into A0. Same signal is trigger on D7. Set Comparator reference to 1.1 Band Gap ref.
  *  Is acble to trigger and capture data when prescaler is set to 
+ *  This sketch captures data for prescale values of 128, 64, and 32. I may have had
+ *  intermitent capture at 16 but can not reproduce.  
+ *  The maxium sample rate is a burst of (16MHZ / 32)  /13 = 38.4KSps.
  *  
  */
 
